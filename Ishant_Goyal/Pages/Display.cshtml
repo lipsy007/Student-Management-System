@@ -1,0 +1,87 @@
+﻿@page
+@model Ishant_Goyal.DisplayModel
+@{
+
+
+}
+<p><h2> Display Data</h2></p>
+<form method="post">
+    <p>
+        <select asp-for="searchCourse" asp-items="Model.Cou">
+            <option value="">Select Course</option>
+        </select>
+        <select asp-for="searchInstructor" asp-items="Model.INS">
+            <option value="">Select INS</option>
+        </select>
+        <input type="submit" value="Filter" />
+    </p>
+</form>
+<div><B>@Model.a  </B></div>
+<table class="table">
+    <thead>
+        <tr>
+            
+            
+            <th>
+                @Html.DisplayNameFor(model => model.Student[0].LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Student[0].FirstName)
+
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Student[0].Dob)
+
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Student[0].Fees)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Student[0].Course.CourseName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Student[0].Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Student[0].Tax)
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Student)
+
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Dob)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Fees)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Course.CourseName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Tax)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EnrollmentDate)
+                </td>
+                
+            </tr>
+        }
+    </tbody>
+</table>
+

@@ -1,0 +1,138 @@
+﻿@page
+@model Ishant_Goyal.Pages.Students.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Student</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Student.FirstName" class="control-label"></label>
+                <input asp-for="Student.FirstName" class="form-control" />
+                <span asp-validation-for="Student.FirstName" class="text-danger"></span>
+            </div>
+            <div class="text-danger"><b>@Model.Msg</b></div>
+            <div class="form-group">
+                <label asp-for="Student.LastName" class="control-label"></label>
+                <input asp-for="Student.LastName" class="form-control" />
+                <span asp-validation-for="Student.LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Student.Dob" class="control-label"></label>
+                <input asp-for="Student.Dob" class="form-control" />
+                <span asp-validation-for="Student.Dob" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Student.Fees" class="control-label"></label>
+                <input asp-for="Student.Fees" class="form-control" />
+                <span asp-validation-for="Student.Fees" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Student.CourseId" class="control-label"></label>
+                <select class="form-control" asp-for="Student.CourseId"
+                        asp-items="@(new SelectList(Model.CInfo,"CourseId","CourseName"))">
+                    <option value="">Select Course</option>
+                </select>
+                <span asp-validation-for="Student.CourseId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Student.Email" class="control-label"></label>
+                <input asp-for="Student.Email" class="form-control" />
+                <span asp-validation-for="Student.Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Student.Tax" class="control-label"></label>
+                <input asp-for="Student.Tax" class="form-control" />
+                <span asp-validation-for="Student.Tax" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Student.EnrollmentDate" class="control-label"></label>
+                <input asp-for="Student.EnrollmentDate" class="form-control" />
+                <span asp-validation-for="Student.EnrollmentDate" class="text-danger"></span>
+            </div>
+            @*<div class="form-group">
+            <label asp-for="Student.Grade" class="control-label"></label>
+            <input asp-for="Student.Grade" class="form-control" />
+            <span asp-validation-for="Student.Grade" class="text-danger"></span>
+        </div>*@
+            <!--<div class="form-group">
+        <label asp-for="Student.StateCode" class="control-label"></label>
+        <select asp-for="Student.StateCode" class="form-control" asp-items="ViewBag.StateCode"></select>
+
+    </div>
+    <div class="form-group">
+        <label asp-for="Student.CityCode" class="control-label"></label>
+        <select asp-for="Student.CityCode" class="form-control" asp-items="ViewBag.CityCode"></select>
+
+    </div>-->
+            <div class="form-group">
+                @Html.LabelFor(x => Model.Student.StateCode, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-5">
+                    @Html.DropDownListFor(x => Model.Student.StateCode,
+                      new SelectList(Model.sta, "StateCode", "StateName"),
+                      htmlAttributes: new { @class = "form-control", id = "State", @required = true })
+                    @Html.ValidationMessageFor(x => x.Student.StateCode, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(x => Model.Student.CityCode, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-5">
+                    @Html.DropDownListFor(x => Model.Student.CityCode,
+                      new SelectList(Model.CityInfo, "CityCode", "CityName"),
+                      htmlAttributes: new { @class = "form-control", @id = "City" })
+                    @Html.ValidationMessageFor(x => x.Student.CityCode, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        $('#State').change(function () {
+            var selectedCountry = $("#State").val();
+            var regionsSelect = $('#City');
+            regionsSelect.empty();
+            if (selectedCountry != null && selectedCountry != '') {
+                $.ajax({
+                    type: "POST",
+                    url: "/Students/Create?handler=Citys",
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("XSRF-TOKEN",
+                            $('input:hidden[name="__RequestVerificationToken"]').val());
+                    },
+                    data: selectedCountry,
+                    contentType: "json; charset=utf-8",
+                    success: function (Citys) {
+                        if (Citys != null && !jQuery.isEmptyObject(Citys)) {
+                            regionsSelect.append($('<option/>', {
+                                value: null,
+                                text: ""
+                            }));
+                            $.each(Citys, function (index, City) {
+                                regionsSelect.append("<option value='" + City.cityCode + "'>" + City.cityName + "</option>");
+                            });
+                        };
+                    },
+                    failure: function (response) {
+                        alert(response);
+                    }
+                });
+            }
+        });
+    </script>
+}

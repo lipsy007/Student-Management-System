@@ -1,0 +1,176 @@
+﻿@page
+@model Ishant_Goyal.Pages.Students.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<form method="post">
+    <p>
+        <select asp-for="searchcou" asp-items="Model.Cou">
+            <option value="">Select Course</option>
+        </select> 
+        <select asp-for="SelectOperator">
+            <option>Select Operator</option>
+            <option>OR</option>
+            <option>AND</option>
+        </select>
+
+        First Name: <input type="text" data-val-required="The Field is required." asp-for="SearchString" />
+        <select asp-for="SelectOperator1">
+            <option>Select Operator</option>
+            <option>OR</option>
+            <option>AND</option>
+        </select>
+        <select asp-for="searchdSta" asp-items="Model.st">
+            <option value="">Select State</option>
+        </select>
+        <input type="submit" class="btn btn-primary" value="Filter" />
+        <div class="text-danger"><b>@Model.Msg</b></div>
+    </p>
+</form>
+@if (@Model.Students != null && Model.Students.Count > 0)
+{
+
+    <table class="table " style="background-color:bisque; color:black" border="1"  width="100%" >
+        <thead>
+            <tr>
+                <th>
+                    <a asp-page="./Index" asp-route-sortOrder="@Model.NameSort"
+                       asp-route-currentFilter="@Model.CurrentFilter">
+                        @Html.DisplayNameFor(model => model.Student[0].FirstName)
+                    </a>
+                </th>
+                <th>
+
+                    @Html.DisplayNameFor(model => model.Student[0].LastName)
+
+                </th>
+                @*<th>
+                        @Html.DisplayNameFor(model => model.Student[0].StateName)
+                    </th>*@
+                <th>
+                    <a asp-page="./Index" asp-route-sortOrder="@Model.Dobsort"
+                       asp-route-currentFilter="@Model.CurrentFilter">
+                        @Html.DisplayNameFor(model => model.Student[0].Dob)
+                    </a>
+                </th>
+                <th>
+                    <a asp-page="./Index" asp-route-sortOrder="@Model.fSort"
+                       asp-route-currentFilter="@Model.CurrentFilter">
+                        @Html.DisplayNameFor(model => model.Student[0].Fees)
+                    </a>
+                </th>
+                <th>
+                    <a asp-page="./Index" asp-route-sortOrder="@Model.LSort"
+                       asp-route-currentFilter="@Model.CurrentFilter">
+                        @Html.DisplayNameFor(model => model.Student[0].Course.CourseName)
+                    </a>
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Student[0].Email)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Student[0].Tax)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Student[0].EnrollmentDate)
+                </th>
+                @*<th>
+                        @Html.DisplayNameFor(model => model.Student[0].CityName)
+                    </th>*@
+                <th>
+                    @Html.DisplayNameFor(model => model.Student[0].CityCodeNavigation.CityName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Student[0].StateCodeNavigation.StateName)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+
+
+        <tbody>
+
+            @foreach (var item in Model.Students)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FirstName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LastName)
+                    </td>
+                    @*<td>
+                            @Html.DisplayFor(modelItem => item.StateName)
+                        </td>*@
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Dob)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Fees)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Course.CourseName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Tax)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EnrollmentDate)
+                    </td>
+                    @*<td>
+                            @Html.DisplayFor(modelItem => item.CityName)
+                        </td>*@
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CityCodeNavigation.CityName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StateCodeNavigation.StateName)
+                    </td>
+                    <td>
+                        <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                        <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                </tr>
+
+            }
+
+        </tbody>
+    </table>
+    
+        var prevDisabled = !Model.Students.HasPreviousPage ? "disabled" : "";
+        var nextDisabled = !Model.Students.HasNextPage ? "disabled" : "";
+    
+
+    <a asp-page="./Index"
+       asp-route-sortOrder="@Model.CurrentSort"
+       asp-route-pageIndex="@(Model.Students.PageIndex - 1)"
+       asp-route-currentFilter="@Model.CurrentFilter"
+       class="btn btn-primary @prevDisabled">
+        Previous
+    </a>
+    <a asp-page="./Index"
+       asp-route-sortOrder="@Model.CurrentSort"
+       asp-route-pageIndex="@(Model.Students.PageIndex + 1)"
+       asp-route-currentFilter="@Model.CurrentFilter"
+       class="btn btn-primary @nextDisabled">
+        Next
+    </a>
+
+}
+
+
+else
+{
+<p>No Record Found</p>
+}
